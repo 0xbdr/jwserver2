@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BADREDDIN's Professional Website</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+        header, footer {
+            background: #1f1f1f;
+            color: #fff;
+            text-align: center;
+            padding: 30px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.2em;
+            margin-top: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        main {
+            padding: 40px 0;
+        }
+        section {
+            margin-bottom: 60px;
+        }
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #555;
+            padding-bottom: 10px;
+        }
+        p {
+            font-size: 1.2em;
+            color: #bdbdbd;
+        }
+        .grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .card {
+            flex: 1 1 calc(33.333% - 20px);
+            background: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            text-align: left;
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card img {
+            width: 100%;
+            border-bottom: 2px solid #333;
+        }
+        .card-content {
+            padding: 20px;
+        }
+        .card h3 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        .card p {
+            color: #bdbdbd;
+        }
+        .card a {
+            display: inline-block;
+            margin-top: 15px;
+            color: #64b5f6;
+            text-decoration: none;
+        }
+        .card a:hover {
+            text-decoration: underline;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        form input, form textarea, form button {
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            border: 1px solid #333;
+            background: #1e1e1e;
+            color: #e0e0e0;
+        }
+        form button {
+            background: #64b5f6;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        form button:hover {
+            background: #42a5f5;
+        }
+        footer p {
+            margin: 0;
+            font-size: 1em;
+        }
+        @media (max-width: 768px) {
+            .card {
+                flex: 1 1 100%;
+            }
+            h2 {
+                font-size: 2em;
+            }
+            header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>BADREDDIN's World</h1>
+            <p>Developer. Gamer. Innovator.</p>
+        </div>
+    </header>
+    <main>
+        <section id="about" class="container">
+            <h2>About Me</h2>
+            <p>I’m BADREDDIN, a passionate developer focused on server and game development. Explore my journey, projects, and interests below.</p>
+            <a href="http://127.0.0.1/testfolder/infinitycastle.mp3">link for kimetsu no yaiba ost</a>
+        </section>
+        <section id="portfolio" class="container">
+            <h2>Portfolio</h2>
+            <div class="grid">
+                <div class="card">
+                    <img src="jws.png" alt="Java HTTP Server Project Thumbnail">
+                    <div class="card-content">
+                        <h3>Java HTTP Server</h3>
+                        <p>An HTTP server built from scratch in Java. <a href="https://ab_iy.itch.io/">Check it out on itch.io</a>.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="rmz.png" alt="Survival Horror Game Thumbnail">
+                    <div class="card-content">
+                        <h3>Survival Horror Game</h3>
+                        <p>A maze survival game built in Godot, featuring multiplayer modes. <em>Currently in development.</em></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="cht.png" alt="LAN Chat App Thumbnail">
+                    <div class="card-content">
+                        <h3>LAN Chat App</h3>
+                        <p>A UDP-based LAN chat application. <a href="https://ab_iy.itch.io">Download on itch.io</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="contact" class="container">
+            <h2>Contact Me</h2>
+            <form>
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="email" id="email" placeholder="Your Email" required>
+                <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+                <button type="submit" id="sendbutton">Send Message</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 BADREDDIN. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
