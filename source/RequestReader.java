@@ -10,6 +10,8 @@ public String methode ="";
 public String filetype ="";
 public String path ="";
 public String extension ="";
+
+
 public RequestReader(String r){
     boolean ok = false;
     String[] resulte = {"","","",""};
