@@ -8,6 +8,8 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
 public class Tools {
+
+    
     
 
 public static boolean Streambuffer(File f,OutputStream os){
@@ -19,12 +21,13 @@ public static boolean Streambuffer(File f,OutputStream os){
     int bread;
     while ((bread = binst.read(fbyte))!= -1) {
         bost.write(fbyte, 0, bread);
+        bost.flush();
     }
     bost.flush();
-
     return true;
 }catch(Exception e){
-    System.err.println("fk");
+
+    System.err.println(e.getClass().getName() + " connection error");
     return false;
 
         }

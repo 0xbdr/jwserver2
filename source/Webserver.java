@@ -107,13 +107,16 @@ public class Webserver {
                                     out.println("Content-Length: " + fl.length());
                                     out.println("Content-Disposition: attachment"); // the Rreader.extension will return the full file name
                                     out.println("filename=\"" + Requestreader.extension + "\"");
-                                    out.flush();
                                     if ( ! Tools.Streambuffer(fl, clientSocket.getOutputStream())){
                                         throw HTTP.NotFoundException;
                                     }
+                                    out.flush();
                                 
                                 
                                     
+                                }else if (Requestreader.filetype.equals(String.valueOf(HTTP.notfound))){
+                                    throw HTTP.NotFoundException;
+
                                 }
 
                 }else if (Requestreader.methode.equals(HTTP.POST)){
@@ -133,7 +136,7 @@ public class Webserver {
               
             
           } catch (Exception e) {
-
+            System.out.println(e.getClass().getName());
 
                     if (e.getClass() == HTTP.NotFoundException.getClass()){
                         r = "404 NotFound";
@@ -156,6 +159,7 @@ public class Webserver {
         }finally{
                 try{
                     System.out.println(threadresult+"Status  :: "+r);
+                    
                 
                 clientSocket.close();  }
                 catch(Exception e){

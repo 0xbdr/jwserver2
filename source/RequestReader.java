@@ -1,5 +1,6 @@
 package source;
 import java.io.File;
+import java.nio.file.*;;
 public class RequestReader {
     
     /**
@@ -10,30 +11,14 @@ public String methode ="";
 public String filetype ="";
 public String path ="";
 public String extension ="";
+public String httpvers ="";
 
 
 public RequestReader(String r){
-    boolean ok = false;
-    String[] resulte = {"","","",""};
-    int size =0;
-    if (r.endsWith("HTTP/1.0") ||r.endsWith("HTTP/1.1")){size = r.length()-8;}else if (r.endsWith("HTTP/3") ||r.endsWith("HTTP/2")){size = r.length()-6;}
-    
-    char[] requestchar = r.toCharArray();
-    int startpos = 0;
-    String m ="";
-    String body = "";
-    boolean entersjloop = true;
-    for (int i = 0; i <2; i++) {
-        for (int j = 0; j != size; j++) {
-            if (entersjloop){entersjloop = false;j = startpos;}
-            if (requestchar[j] == ' '){startpos=j+1;entersjloop = true;break;}
-            if (i == 0){m += requestchar[j];}else if (i == 1){body += requestchar[j];}
-        }
-        resulte[0] = m;
-        resulte[2] = body;
-    };
-   
-         if (r.contains("script")|| r.contains("js")){
+    String[] resulte = r.split(" ");
+
+   if (resulte[0].equals(HTTP.GET)){
+         if (resulte[2].contains("script")|| r.contains(".js")){
             resulte[1] = "script";
             
         }else if (r.contains("style")|| r.contains("css")){
@@ -67,14 +52,17 @@ public RequestReader(String r){
             if (file.isDirectory()) {resulte[1]="indexfile";}
             }
         }
+    }else if (resulte[0].equals(HTTP.POST)){
+
+
+
+
+    }
        
         if (resulte[1].isEmpty()){
-            resulte[1] = "redirect";
+            resulte[1] = String.valueOf(HTTP.notfound);
         }
-        this.methode =resulte[0];
-        this.filetype = resulte[1];
-        this.path = "files/" + resulte[2];
-        this.extension = resulte[3];
+      
     }
 
   
