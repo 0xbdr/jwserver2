@@ -59,11 +59,11 @@ public class Webserver {
                  if(Requestreader.methode.equals(HTTP.GET)){
 
 
-                                if (Requestreader.filetype.equals("indexfile") || 
-                                Requestreader.filetype.equals("style") || 
-                                Requestreader.filetype.equals("script")){
+                                if (Requestreader.contenttype.equals("indexfile") || 
+                                Requestreader.contenttype.equals("style") || 
+                                Requestreader.contenttype.equals("script")){
                                     
-                                    if(Requestreader.filetype.equals("indexfile")){
+                                    if(Requestreader.contenttype.equals("indexfile")){
                                         if ((response = Tools.FileString( Requestreader.path + "index.html"))== null){throw HTTP.NotFoundException;};
                                     }else{
                                         if ((response = Tools.FileString( Requestreader.path ))== null){throw HTTP.NotFoundException;};
@@ -71,7 +71,7 @@ public class Webserver {
                                     
                                     out.println("HTTP/1.1 200 OK");
                                     r = "200 OK";
-                                    switch (Requestreader.filetype) {
+                                    switch (Requestreader.contenttype) {
                                         case "indexfile":
                                             out.println("Content-Type: text/html");
                                             break;
@@ -87,7 +87,7 @@ public class Webserver {
                                     out.flush();
 
                                 }
-                                else if (Requestreader.filetype.equals("img") || Requestreader.filetype.equals("ico")){
+                                else if (Requestreader.contenttype.equals("img") || Requestreader.contenttype.equals("ico")){
                                     byte[] buffer;
                                     if ((buffer= Tools.getbuffer(Requestreader.path))== null){throw HTTP.NotFoundException;};
                                     out.println("HTTP/1.1 200 OK");
@@ -99,7 +99,7 @@ public class Webserver {
                                     out.flush();
 
                                 }
-                                else if (Requestreader.filetype.equals("download")){
+                                else if (Requestreader.contenttype.equals("download")){
                                     File fl = new File(Requestreader.path);
                                     out.println("HTTP/1.1 200 OK");
                                     r = "200 OK";
@@ -114,7 +114,7 @@ public class Webserver {
                                 
                                 
                                     
-                                }else if (Requestreader.filetype.equals(String.valueOf(HTTP.notfound))){
+                                }else if (Requestreader.contenttype.equals(String.valueOf(HTTP.notfound))){
                                     throw HTTP.NotFoundException;
 
                                 }
@@ -127,7 +127,7 @@ public class Webserver {
              
              
              
-                r+=" : " +Requestreader.filetype;
+                r+=" : " +Requestreader.contenttype;
              }else {
                 throw HTTP.BadRequestException;
              }

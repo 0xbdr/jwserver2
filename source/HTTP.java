@@ -7,6 +7,7 @@ public class HTTP {
     public static final String GET = "GET";
     public static final String POST = "POST";
     
+    
     public static Exception NotFoundException = new Exception(){
         @Override
     public String getMessage() {
