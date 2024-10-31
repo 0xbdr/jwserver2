@@ -4,24 +4,58 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.Socket;;
 
 
 public class Webserver {
-    public final static int PORT = 80;
-    public static boolean exit = false;
+    public static int port = 80;
+    private static volatile boolean exit = false;
+    private static int connections = 0;
+    private static Runnable Errorhandler = new Runnable() {
+        @Override
+        public void run(){
+
+    }};
     
     
-    
+    public static void changePort(int port){
+
+    }
+    public static void Stop(){
+        exit = true;
+    }
+    public static boolean IsRunning(){
+        return !exit;
+    }
+    public static int GetConnectionsCount(){
+        return connections;
+    }
+    public static void SetErrorHandler(Runnable r){
+        Errorhandler = r;
+    }
+    public static void run(){
+        try  {
+            Stop();
+        Thread.sleep(1222);
+        exit = false;
+        new Thread(()-> start()).start();;
+
+        }catch(Exception e){
+            System.out.println("cant start the server :: " + e.getClass().getName());
+            e.printStackTrace();
+        }
+
+    }
     
 
-    public static void run() {
+    public static void start() {
         try {
-            ServerSocket server = new ServerSocket(PORT); 
-            System.out.println("|| HTTP Server started on port " + PORT+" ||");
+            ServerSocket server = new ServerSocket(port); 
+            System.out.println("|| HTTP Server started on port " + port+" ||");
             while (true) {
                 Socket client = server.accept();
                 new Thread(() -> handleRequest(client)).start();;
+                connections+=1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -29,7 +63,7 @@ public class Webserver {
         }
     }
 
-    public static void handleRequest(Socket clientSocket) {
+    private static void handleRequest(Socket clientSocket) {
 
         
         String r ="";
@@ -60,8 +94,8 @@ public class Webserver {
 
 
                                 if (Requestreader.contenttype.equals("indexfile") || 
-                                Requestreader.contenttype.equals("style") || 
-                                Requestreader.contenttype.equals("script")){
+                                Requestreader.contenttype.equals("text/css") || 
+                                Requestreader.contenttype.equals("text/javascript")){
                                     
                                     if(Requestreader.contenttype.equals("indexfile")){
                                         if ((response = Tools.FileString( Requestreader.path + "index.html"))== null){throw HTTP.NotFoundException;};
@@ -71,31 +105,21 @@ public class Webserver {
                                     
                                     out.println("HTTP/1.1 200 OK");
                                     r = "200 OK";
-                                    switch (Requestreader.contenttype) {
-                                        case "indexfile":
-                                            out.println("Content-Type: text/html");
-                                            break;
-                                        case "style":
-                                            out.println("Content-Type: style/css");
-                                            break;
-                                        case "script":
-                                            out.println("Content-Type: text/javascript");break; }
-                                    
+                                    out.println("Content-Type: " + Requestreader.contenttype);
                                     out.println("Content-Length: " + response.length());
                                     out.println();
                                     out.print(response);
                                     out.flush();
 
                                 }
-                                else if (Requestreader.contenttype.equals("img") || Requestreader.contenttype.equals("ico")){
+                                else if (Requestreader.contenttype.contains("image/")){
                                     byte[] buffer;
-                                    if ((buffer= Tools.getbuffer(Requestreader.path))== null){throw HTTP.NotFoundException;};
                                     out.println("HTTP/1.1 200 OK");
                                     r = "200 OK";
-                                    out.println("Content-Type: image/"+Requestreader.extension);
+                                    out.println("Content-Type: "+Requestreader.contenttype);
                                     out.println("Content-Length: " + buffer.length);
                                     out.println();
-                                    clientSocket.getOutputStream().write(buffer);
+                                    Tools.Streambuffer(new File(Requestreader.path), clientSocket.getOutputStream()+);
                                     out.flush();
 
                                 }
@@ -114,7 +138,7 @@ public class Webserver {
                                 
                                 
                                     
-                                }else if (Requestreader.contenttype.equals(String.valueOf(HTTP.notfound))){
+                                }else if (Requestreader.contenttype.equals(String.valueOf(HTTP.NOTFOUND))){
                                     throw HTTP.NotFoundException;
 
                                 }

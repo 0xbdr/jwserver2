@@ -3,9 +3,12 @@ package source;
 public class HTTP {
 
     public static final int OK = 200;
-    public static final int notfound = 404;
+    public static final int NOTFOUND = 404;
+    public static final int INTERNALSERVERERROR = 500;
     public static final String GET = "GET";
     public static final String POST = "POST";
+    
+
     
     
     public static Exception NotFoundException = new Exception(){

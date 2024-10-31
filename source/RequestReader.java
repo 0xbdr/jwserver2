@@ -9,12 +9,13 @@ public class RequestReader {
  */
 public String methode ="";
 public String contenttype ="";
+public String filename = "";
 public String path ="";
 public String httpvers ="";
 
 
 public RequestReader(String r) throws Exception{
-    String[] request = r.split("");
+    String[] request = r.split(" ");
 
     if (request.length >= 3 ){
         if (request[0].equals(HTTP.GET)){
@@ -25,16 +26,23 @@ public RequestReader(String r) throws Exception{
                 
                 
                 try {
-                    File filepath = new File(request[1]);
+                    File filepath = new File("files/"+request[1]);
                     if (filepath.isDirectory()){
                         contenttype = "indexfile";
-
-                    }else if ((filepath.isFile() && filepath.canRead() && 
-                    (contenttype = Files.probeContentType(filepath.toPath())) != null)){
                         path = request[1];
                         httpvers = request[2];
+
+                    }else if (filepath.isFile() && filepath.canRead())  {
+                        filename = filepath.getName();
+                    if ((contenttype = Files.probeContentType(filepath.toPath())) == null){
+                        contenttype = "application/octet-stream";
+                    }
+                        path = request[1];
+                        httpvers = request[2];
+                    }else if (!filepath.exists()){
+                        path =String.valueOf(HTTP.NOTFOUND);
                     }else{
-                        throw HTTP.InternalServerErrorException; 
+                        path = String .valueOf(HTTP.INTERNALSERVERERROR);
                     }
 
 
