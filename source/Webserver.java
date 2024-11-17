@@ -93,9 +93,10 @@ public class Webserver {
                  if(Requestreader.methode.equals(HTTP.GET)){
 
 
-                                if (Requestreader.contenttype.equals("indexfile") || 
-                                Requestreader.contenttype.equals("text/css") || 
-                                Requestreader.contenttype.equals("text/javascript")){
+                                if (Requestreader.contenttype.equals("indexfile") || Requestreader.contenttype.equals("text/css") || 
+                                Requestreader.contenttype.equals("text/javascript"))
+                                
+                                {
                                     
                                     if(Requestreader.contenttype.equals("indexfile")){
                                         if ((response = Tools.FileString( Requestreader.path + "index.html"))== null){throw HTTP.NotFoundException;};
@@ -113,34 +114,38 @@ public class Webserver {
 
                                 }
                                 else if (Requestreader.contenttype.contains("image/")){
-                                    byte[] buffer;
+                                    File img = new File(Requestreader.path);
+                                    
                                     out.println("HTTP/1.1 200 OK");
                                     r = "200 OK";
                                     out.println("Content-Type: "+Requestreader.contenttype);
-                                    out.println("Content-Length: " + buffer.length);
+                                    out.println("Content-Length: " + img.length());
                                     out.println();
-                                    Tools.Streambuffer(new File(Requestreader.path), clientSocket.getOutputStream()+);
+                                    Tools.Streambuffer(img, clientSocket.getOutputStream());
                                     out.flush();
 
                                 }
-                                else if (Requestreader.contenttype.equals("download")){
+                                else if (Requestreader.contenttype.equals("application/octet-stream")){
+
                                     File fl = new File(Requestreader.path);
                                     out.println("HTTP/1.1 200 OK");
                                     r = "200 OK";
                                     out.println("Content-Type: application/octet-stream");  
                                     out.println("Content-Length: " + fl.length());
-                                    out.println("Content-Disposition: attachment"); // the Rreader.extension will return the full file name
-                                    out.println("filename=\"" + Requestreader.extension + "\"");
+                                    out.println("Content-Disposition: attachment"); 
+                                    out.println("filename=\"" + Requestreader.contenttype + "\"");
                                     if ( ! Tools.Streambuffer(fl, clientSocket.getOutputStream())){
-                                        throw HTTP.NotFoundException;
+                                        throw HTTP.InternalServerErrorException;
                                     }
                                     out.flush();
                                 
                                 
                                     
-                                }else if (Requestreader.contenttype.equals(String.valueOf(HTTP.NOTFOUND))){
+                                }else if (Requestreader.contenttype.isEmpty() && Requestreader.contenttype.equals(String.valueOf(HTTP.NOTFOUND))){
                                     throw HTTP.NotFoundException;
 
+                                }else if (Requestreader.contenttype.isEmpty() && Requestreader.path.equals(String.valueOf(HTTP.INTERNALSERVERERROR))){
+                                    throw HTTP.InternalServerErrorException;
                                 }
 
                 }else if (Requestreader.methode.equals(HTTP.POST)){
@@ -172,7 +177,7 @@ public class Webserver {
                         
                     }else if (e.getClass() == HTTP.BadRequestException.getClass()){
                         try {
-                            clientSocket.getOutputStream().write("400 Bad Request".getBytes());
+                            clientSocket.getOutputStream().write("HTTP/1.1 400 Bad Request".getBytes());
                         } catch (Exception ex) {
                             
                         }
