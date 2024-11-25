@@ -29,7 +29,7 @@ public RequestReader(String r) throws Exception{
                     File filepath = new File("files/"+request[1]);
                     if (filepath.isDirectory()){
                         contenttype = "indexfile";
-                        path = request[1];
+                        path = "files/" + request[1];
                         httpvers = request[2];
 
                     }else if (filepath.isFile() && filepath.canRead())  {
@@ -37,7 +37,7 @@ public RequestReader(String r) throws Exception{
                     if ((contenttype = Files.probeContentType(filepath.toPath())) == null){
                         contenttype = "application/octet-stream";
                     }
-                        path = request[1];
+                        path = "files/" + request[1];
                         httpvers = request[2];
                     }else if (!filepath.exists()){
                         path =String.valueOf(HTTP.NOTFOUND);
