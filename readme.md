@@ -15,7 +15,7 @@ A simple Java web server (JDK 17) that serves static files from the `files/` dir
    java -version
    ```
 
-2. Clone the repository and navigate to the project directory.
+2. Clone the repository and navigate to the project directory .
 
 3. run the `main.java` file:
    ```bash
