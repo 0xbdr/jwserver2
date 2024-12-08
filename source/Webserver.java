@@ -1,4 +1,5 @@
 package source;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -98,15 +99,15 @@ public class Webserver {
         String threadresult = "";
         
         try {
+            //test.main(null, clientSocket);
             BufferedReader reqbufr = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String request =reqbufr.readLine();
-            
-            threadresult += "-------------ClientConnected-------------\n"+"Client  :: "+clientSocket.toString()
+            threadresult += "[----------------ClientConnected----------------]\n"+"Client  :: "+clientSocket.toString()
             +"\nClient  :: "+clientSocket.getInetAddress().getHostAddress() + "\nBuffer  :: "+String.valueOf(clientSocket.getReceiveBufferSize())+
             "\n" +"Request :: " + request +"\n";
             if (request  != null && !request.isEmpty()){
                 RequestReader Requestreader = new source.RequestReader(request);
-                threadresult +="Methode :: "+Requestreader.methode+"\nPath    :: "+Requestreader.path +"\n";
+                threadresult +="Methode :: "+Requestreader.methode+"\nCtype   :: "+Requestreader.contenttype+"\nPath    :: "+Requestreader.path +"\n";
                 r= String.valueOf(Requesthandler.handleRequest(Requestreader, clientSocket));
             }
                 
@@ -114,9 +115,13 @@ public class Webserver {
 
         } catch (Exception e) {
            Errorhandler.handleError(e, clientSocket);
+           if (r.isEmpty()){
+            r = "Exception";
+           }
                 
                     }finally{
                 try{
+                    System.out.flush();
                     System.out.println(threadresult+"Status  :: "+r);
                     clientSocket.close();  }
                 catch(Exception e){
@@ -127,7 +132,7 @@ public class Webserver {
     
     
     private static void DefaultErrorHandler(Exception e,Socket clientSocket){
-        System.out.println("Exception !: " + e.getClass().getName());
+        System.out.println("[!]EXCEPTION :: " + e.getMessage()+" :: "+e.getClass().getName()+"[!]");
 
                     if (e.getClass() == HTTP.NotFoundException.getClass()){
                         try {
@@ -200,15 +205,16 @@ public class Webserver {
             
             
                 
-            }else if (Requestreader.contenttype.isEmpty() && Requestreader.contenttype.equals(String.valueOf(HTTP.NOTFOUND))){
+            }else if (Requestreader.contenttype.isEmpty() && Requestreader.path.equals(String.valueOf(HTTP.NOTFOUND))){
                 throw HTTP.NotFoundException;
+                
 
             }else if (Requestreader.contenttype.isEmpty() && Requestreader.path.equals(String.valueOf(HTTP.INTERNALSERVERERROR))){
                 throw HTTP.InternalServerErrorException;
             }
 
 }else if (Requestreader.methode.equals(HTTP.POST)){
-//TODO add post request hh
+    clientSocket.getOutputStream().write("recervied your message".getBytes());
 
 }
         return returnvalue;

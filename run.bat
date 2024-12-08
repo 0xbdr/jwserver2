@@ -1,15 +1,21 @@
 @echo off
 cls
-echo Updating classes ...
+echo Starting jWEBSERVER
+echo [!] Updating classes ...
 echo Compiling main.java
 javac -d bin source/main.java
 echo Compiling Webserver.java
 javac -d bin source/Webserver.java
 echo Compiling RequestReader.java
 javac -d bin source/RequestReader.java
-echo moving
+echo Compiling Tools.java
+javac -d bin source/Tools.java
+echo Compiling Handler.java
+javac -d bin source/Handler.java
+echo Compiling HTTP.java
+javac -d bin source/HTTP.java
 move source/*.class .
-echo Done
+echo [!] Done
 
 echo [                    ]
 for /l %%i in (1,1,10000) do (
@@ -56,5 +62,5 @@ for /l %%i in (1,1,10000) do (
 )
 @echo off
 echo running main class...
-cls
+
 java -cp bin source.main
