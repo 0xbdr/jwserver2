@@ -1,5 +1,5 @@
 ---
-
+.java
 # Java Web Server
 
 A simple Java web server (JDK 17) that serves static files from the `files/` directory.
